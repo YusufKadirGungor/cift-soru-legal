@@ -34,59 +34,138 @@
     --text: #FBF4EC; --text2: #DCD0E3; --muted: #A895B4;
     --me: #FFB561; --on-me: #2B1606; --me-bubble: #3A2618;
     --partner: #C7B0FF; --partner-bubble: #2C2147;
+    --gold: #FFD43B;
     --display: "Bricolage Grotesque", "Plus Jakarta Sans", "Segoe UI", sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   body { background: var(--bg); color: var(--text); font: 400 17px/1.6 "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; overflow-wrap: break-word; }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
-  h1, h2, .wordmark { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; }
-  h2 { font-size: 30px; line-height: 1.2; margin-bottom: 24px; }
-  h3 { font-size: 18px; font-weight: 800; line-height: 1.35; margin-bottom: 6px; }
+  h1, h2, .wordmark, .amount { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: 30px; line-height: 1.2; margin-bottom: 8px; }
+  h3 { font-size: 18px; font-weight: 800; line-height: 1.35; }
   p { color: var(--text2); }
   a { color: var(--me); font-weight: 600; }
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--me); outline-offset: 3px; border-radius: 4px; }
   section { padding: 48px 0; border-top: 1px solid var(--border); }
+  .intro { margin-bottom: 24px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
   /* Üst */
-  .hero { padding: 24px 0 52px; text-align: center; }
-  .brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 36px; }
+  .hero { padding: 24px 0 44px; text-align: center; }
+  .brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 28px; }
   .brand svg { width: 42px; height: 40px; }
   .wordmark { font-size: 34px; line-height: 1; }
   .wordmark span { color: var(--me); }
-  .hero-mark { display: block; width: 190px; height: auto; margin: 0 auto 28px; }
-  h1 { font-size: 42px; line-height: 1.08; margin-bottom: 16px; }
+  h1 { font-size: 42px; line-height: 1.08; margin-bottom: 14px; }
   h1 span { display: block; }
   h1 span + span { color: var(--me); }
-  .lead { font-size: 18px; max-width: 30em; margin: 0 auto; }
-  .stores { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 28px auto 0; list-style: none; }
+  .lead { font-size: 18px; max-width: 24em; margin: 0 auto; }
+  .stores { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 24px auto 0; list-style: none; }
   .store { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 12px 8px; line-height: 1.3; text-align: center; }
   .store strong { display: block; font-size: 16px; font-weight: 800; white-space: nowrap; }
   .store span { display: block; font-size: 13px; font-weight: 700; color: var(--me); margin-top: 2px; }
 
-  /* Nasıl çalışır */
-  .steps { display: grid; gap: 14px; list-style: none; counter-reset: step; }
-  .steps li { counter-increment: step; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
-  .steps li::before { content: counter(step); display: grid; place-items: center; width: 38px; height: 38px; margin-bottom: 14px; border-radius: 50%; background: var(--me); color: var(--on-me); font-family: var(--display); font-size: 19px; }
-  .steps li:nth-child(2)::before { background: var(--partner); color: #24163A; }
+  /* Nasıl çalışır: telefon ve adımlar */
+  .demo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 36px; text-align: left; }
+  .steps { list-style: none; display: grid; gap: 6px; min-width: 0; counter-reset: step; }
+  .steps li { counter-increment: step; display: flex; align-items: center; gap: 8px; padding: 8px 6px; border: 1px solid transparent; border-radius: 12px; font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--muted); transition: color .3s, background-color .3s, border-color .3s; }
+  .steps li::before { content: counter(step); flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--border); color: var(--text); font-size: 12px; transition: background-color .3s, color .3s; }
 
-  /* Özellikler */
-  .features { display: grid; gap: 12px; list-style: none; }
-  .features li { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px 20px; }
-  .features h3 { color: var(--me); }
-  .features li:nth-child(even) h3 { color: var(--partner); }
-  .features p, .steps p { font-size: 16px; }
+  .phone { flex: none; position: relative; width: 18em; height: 33em; font-size: 11.4px; line-height: 1.35; background: var(--bg); border: .55em solid #4A3759; border-radius: 3em; box-shadow: 0 1.5em 4em rgba(0,0,0,.45); overflow: hidden; user-select: none; }
+  .phone::before { content: ""; position: absolute; top: .6em; left: 50%; width: 5em; height: 1.1em; margin-left: -2.5em; border-radius: 1em; background: #0B060F; z-index: 2; }
+  .bar { position: absolute; top: 2.6em; left: 1.1em; right: 1.1em; display: flex; align-items: center; justify-content: space-between; }
+  .bar .wordmark { font-size: 1.5em; }
+  .streak { display: flex; align-items: center; gap: .35em; padding: .3em .7em; border-radius: 2em; background: var(--me-bubble); color: var(--me); font-weight: 800; }
+  .streak svg { width: 1.1em; height: 1.1em; }
+  .count { position: relative; display: block; width: .8em; height: 1.35em; overflow: hidden; }
+  .count b { position: absolute; inset: 0; text-align: center; transition: transform .45s, opacity .45s; }
+  .count .old { transform: translateY(-100%); opacity: 0; }
+  .plus { position: absolute; top: 5.1em; right: 1.1em; padding: .15em .7em; border-radius: 2em; background: var(--me); color: var(--on-me); font-weight: 800; opacity: 0; }
 
-  /* Premium */
-  .premium { background: var(--partner-bubble); border: 1px solid var(--partner); border-radius: 24px; padding: 28px 22px; }
-  .premium h2 { margin-bottom: 12px; }
-  .premium ul { list-style: none; margin: 18px 0; display: grid; gap: 10px; }
-  .premium li { position: relative; padding-left: 22px; }
-  .premium li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--me); }
-  .premium .share { background: var(--me-bubble); color: var(--text); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
+  .scene { position: absolute; top: 7.2em; left: 1.1em; right: 1.1em; bottom: 1.5em; display: flex; flex-direction: column; justify-content: center; gap: .9em; text-align: center; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+  .title { color: var(--text); font-family: var(--display); font-size: 1.55em; line-height: 1.2; }
+  .small { font-size: .95em; color: var(--muted); }
+  .code { display: flex; justify-content: center; gap: .35em; }
+  .code i { display: grid; place-items: center; width: 1.55em; height: 2em; border: 1px solid var(--border); border-radius: .4em; background: var(--card); font-style: normal; font-weight: 800; font-size: 1.25em; }
+  .code b { display: block; }
+  .btn { padding: .8em; border-radius: 1.2em; background: var(--me); color: var(--on-me); font-weight: 800; }
+  .pair { display: block; width: 9em; height: 8.65em; margin: 0 auto; }
+  .question { padding: 1.4em 1em; border: 1px solid var(--me); border-radius: 1.4em; background: var(--card); }
+  .question .small { display: block; margin-bottom: .6em; color: var(--me); font-weight: 800; }
+  .answers { display: grid; gap: .7em; }
+  .answer { min-height: 6.2em; padding: .8em; border-radius: 1.2em; background: var(--me-bubble); text-align: left; }
+  .answer + .answer { background: var(--partner-bubble); }
+  .answer strong { display: block; margin-bottom: .45em; color: var(--me); font-size: .95em; }
+  .answer + .answer strong { color: var(--partner); }
+  .locked i { display: block; height: .65em; margin-bottom: .45em; border-radius: 1em; background: rgba(251,244,236,.18); }
+  .locked i + i { width: 65%; }
+  .locked span { display: flex; align-items: center; gap: .35em; font-size: .9em; font-weight: 700; color: var(--text2); }
+  .locked svg, .unlock { width: 1.2em; height: 1.2em; }
+  .unlock { width: 2.8em; height: 2.8em; margin: 0 auto; color: var(--me); }
+  .side { grid-template-columns: 1fr 1fr; align-items: stretch; }
+  .side .answer { min-height: 9em; padding: .8em .7em; }
+  .side p { color: var(--text); font-weight: 600; }
+
+  /* Hangi sahne görünür (data-step 1-6) */
+  [data-step="1"] .s1, [data-step="2"] .s2, [data-step="3"] .s3, [data-step="4"] .s4, [data-step="5"] .s5, [data-step="6"] .s5 { opacity: 1; visibility: visible; }
+  [data-step="1"] li:nth-child(1), [data-step="2"] li:nth-child(2), [data-step="3"] li:nth-child(3), [data-step="4"] li:nth-child(4), [data-step="5"] li:nth-child(5), [data-step="6"] li:nth-child(6) { color: var(--text); background: var(--card); border-color: var(--border); }
+  [data-step="1"] li:nth-child(1)::before, [data-step="2"] li:nth-child(2)::before, [data-step="3"] li:nth-child(3)::before, [data-step="4"] li:nth-child(4)::before, [data-step="5"] li:nth-child(5)::before, [data-step="6"] li:nth-child(6)::before { background: var(--me); color: var(--on-me); }
+  /* Seri 6. adıma kadar 4, sonra 5 */
+  .demo:not([data-step="6"]) .count .old { transform: none; opacity: 1; }
+  .demo:not([data-step="6"]) .count .new { transform: translateY(100%); opacity: 0; }
+  [data-step="6"] .plus { opacity: 1; }
+
+  .demo.playing[data-step="1"] .code b { animation: appear .01s both; animation-delay: calc(var(--i) * .2s + .25s); }
+  .demo.playing[data-step="1"] .btn { animation: press .35s 1.6s; }
+  .demo.playing[data-step="2"] .pair { animation: pop .6s both; }
+  .demo.playing[data-step="3"] .question { animation: rise .6s both; }
+  .demo.playing[data-step="4"] .answer { animation: rise .45s .2s both; }
+  .demo.playing[data-step="4"] .answer + .answer { animation-delay: 1.1s; }
+  .demo.playing[data-step="5"] .unlock { animation: pop .5s both; }
+  .demo.playing[data-step="5"] .side .answer { animation: rise .5s .4s both; }
+  .demo.playing[data-step="5"] .side .answer + .answer { animation-delay: .65s; }
+  .demo.playing[data-step="6"] .streak, .demo.playing[data-step="6"] .plus { animation: pop .6s .15s both; }
+  @keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes press { 50% { transform: scale(.93); } }
+  @keyframes pop { 0% { transform: scale(.7); } 65% { transform: scale(1.12); } 100% { transform: scale(1); } }
+  @keyframes rise { from { opacity: 0; transform: translateY(1.2em); } to { opacity: 1; transform: none; } }
+
+  /* Fiyatlar */
+  .plans { display: grid; gap: 14px; list-style: none; }
+  .plan { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 22px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 22px; }
+  .plan.best { border: 2px solid var(--me); background: var(--me-bubble); }
+  .plan.founder { border-color: var(--partner); }
+  .badge { min-height: 27px; padding: 3px 12px; border-radius: 99px; font-size: 13px; font-weight: 800; line-height: 21px; }
+  .best .badge { background: var(--me); color: var(--on-me); }
+  .founder .badge { background: var(--partner-bubble); color: var(--partner); }
+  .price { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; min-height: 52px; }
+  .amount { color: var(--text); font-size: 38px; line-height: 1.35; white-space: nowrap; }
+  .badge:empty { display: none; }
+  .period { color: var(--muted); font-size: 15px; font-weight: 700; }
+  .saving { color: var(--me); font-size: 15px; font-weight: 800; }
+  .fine { margin-top: 18px; font-size: 14px; color: var(--muted); }
+
+  /* Karşılaştırma */
+  table { width: 100%; max-width: 760px; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 1.4; }
+  col.c-free { width: 80px; }
+  col.c-prem { width: 96px; }
+  th, td { padding: 12px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  th:first-child { padding-left: 0; text-align: left; }
+  thead th { vertical-align: top; font-size: 14px; font-weight: 800; }
+  thead small { display: block; margin-top: 4px; font-size: 11px; font-weight: 600; line-height: 1.35; color: var(--text2); }
+  tbody th { font-weight: 600; color: var(--text); }
+  td { text-align: center; font-weight: 700; font-size: 13px; color: var(--text2); }
+  thead th:last-child, td:last-child { background: var(--partner-bubble); }
+  thead th:last-child { color: var(--gold); border-radius: 16px 16px 0 0; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 16px 16px; }
+  td:last-child { color: var(--gold); }
+  .tick, .dash { display: inline-block; width: 20px; height: 20px; vertical-align: middle; color: var(--text2); }
+  td:last-child .tick.gold { color: var(--gold); }
+  .dash { color: var(--muted); }
 
   /* Sık sorulanlar */
-  .faq { max-width: 760px; display: grid; gap: 10px; }
+  .faq { max-width: 760px; display: grid; gap: 10px; margin-top: 16px; }
   details { background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
   summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 14px 18px; font-weight: 700; line-height: 1.4; cursor: pointer; list-style: none; }
   summary::-webkit-details-marker { display: none; }
@@ -100,21 +179,39 @@
   footer a { display: inline-block; padding: 10px 0; overflow-wrap: anywhere; }
   footer p { color: var(--muted); margin-top: 8px; }
 
-  @media (min-width: 700px) {
-    .features { grid-template-columns: 1fr 1fr; }
-    .premium { padding: 40px; }
+  @media (max-width: 359px) {
+    .demo { gap: 8px; }
+    .phone { font-size: 9.6px; }
+    .steps li { flex-direction: column; align-items: flex-start; gap: 4px; padding: 5px 6px; font-size: 12px; }
+  }
+  @media (min-width: 400px) {
+    .phone { font-size: 12.5px; }
+    .demo { gap: 20px; }
+    .steps li { font-size: 14px; padding: 9px 10px; }
+  }
+  @media (min-width: 760px) {
+    .plans { grid-template-columns: repeat(3, 1fr); }
+    .badge:empty { display: block; }
+    table { font-size: 16px; }
+    col.c-free, col.c-prem { width: 180px; }
+    thead th { font-size: 16px; }
+    thead small { font-size: 13px; }
+    td { font-size: 15px; }
   }
   @media (min-width: 900px) {
-    .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; grid-template-rows: auto 1fr; column-gap: 48px; align-items: center; text-align: left; padding: 32px 0 88px; }
-    .brand { grid-column: 1 / -1; justify-content: flex-start; margin-bottom: 72px; }
-    .hero-mark { grid-column: 2; grid-row: 2; width: 100%; max-width: 360px; margin: 0 auto; }
-    .hero-text { grid-column: 1; grid-row: 2; }
-    h1 { font-size: 68px; }
+    .hero { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; column-gap: 48px; align-items: center; text-align: left; padding: 32px 0 72px; }
+    .brand { grid-column: 1 / -1; justify-content: flex-start; margin-bottom: 40px; }
+    h1 { font-size: 64px; }
     h2 { font-size: 36px; }
     .lead { margin: 0; font-size: 20px; }
     .stores { margin: 32px 0 0; }
+    .demo { margin-top: 0; }
+    .phone { font-size: 15px; }
+    .steps li { white-space: nowrap; font-size: 15px; }
     section { padding: 72px 0; }
-    .steps { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
   }
 </style>
 </head>
@@ -128,6 +225,23 @@
     <circle cx="52" cy="44" r="5.5" fill="#160E1C"/>
     <path d="M49 47 L55 47 L57 60 L47 60 Z" fill="#160E1C"/>
   </symbol>
+  <symbol id="tick" viewBox="0 0 24 24">
+    <path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="dash" viewBox="0 0 24 24">
+    <path d="M7 12 H17" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="lock" viewBox="0 0 24 24">
+    <path d="M8 11 V8 a4 4 0 0 1 8 0 V11" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor"/>
+  </symbol>
+  <symbol id="open" viewBox="0 0 24 24">
+    <path d="M8 11 V7 a4 4 0 0 1 7.8 -1.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor"/>
+  </symbol>
+  <symbol id="flame" viewBox="0 0 24 24">
+    <path d="M12.5 2 C13 6 19 8.5 19 14.5 a7 7 0 0 1 -14 0 C5 11.5 6.5 9.5 8 8.5 C8 10.5 9 11.5 10 11.8 C9.5 8 10.5 4.5 12.5 2 Z" fill="currentColor"/>
+  </symbol>
 </svg>
 
 <div class="wrap">
@@ -137,87 +251,130 @@
     <svg aria-hidden="true"><use href="#logo"/></svg>
     <span class="wordmark">twin<span>q</span></span>
   </div>
-  <svg class="hero-mark" viewBox="0 0 104 100" aria-hidden="true"><use href="#logo"/></svg>
   <div class="hero-text">
     <h1><span>Aynı soru,</span> <span>iki kalp.</span></h1>
-    <p class="lead">Twinq çiftlere her gün bir soru sorar; ikiniz de cevaplayınca cevaplar yan yana açılır.</p>
+    <p class="lead">Her gün ikinize bir soru. İkiniz de cevaplayınca cevaplar yan yana açılır.</p>
     <ul class="stores" aria-label="Mağazalar">
       <li class="store"><strong>Google Play</strong><span>Yakında</span></li>
       <li class="store"><strong>App Store</strong><span>Yakında</span></li>
     </ul>
   </div>
+
+  <!-- data-step="6" son kare: JavaScript kapalıyken ve "hareketi azalt" açıkken bu görünür. -->
+  <div class="demo" id="demo" data-step="6">
+    <div class="phone" aria-hidden="true">
+      <div class="bar">
+        <span class="wordmark">twin<span>q</span></span>
+        <span class="streak"><svg><use href="#flame"/></svg><span class="count"><b class="old">4</b><b class="new">5</b></span></span>
+      </div>
+      <span class="plus">+1</span>
+
+      <div class="scene s1">
+        <p class="title">Davet kodu</p>
+        <p class="small">Partnerinin kodunu gir</p>
+        <div class="code"><i><b style="--i:0">4</b></i><i><b style="--i:1">8</b></i><i><b style="--i:2">2</b></i><i><b style="--i:3">9</b></i><i><b style="--i:4">1</b></i><i><b style="--i:5">6</b></i></div>
+        <div class="btn">Eşleş</div>
+      </div>
+
+      <div class="scene s2">
+        <svg class="pair"><use href="#logo"/></svg>
+        <p class="title">Eşleştiniz</p>
+        <p class="small">Sen ve partnerin</p>
+      </div>
+
+      <div class="scene s3">
+        <div class="question">
+          <span class="small">Bugünün sorusu</span>
+          <p class="title">Bugün seni en çok ne güldürdü?</p>
+        </div>
+      </div>
+
+      <div class="scene s4">
+        <p class="title">Bugün seni en çok ne güldürdü?</p>
+        <div class="answers">
+          <div class="answer locked"><strong>Sen</strong><i></i><i></i><span><svg><use href="#lock"/></svg>Kilitli</span></div>
+          <div class="answer locked"><strong>Partnerin</strong><i></i><i></i><span><svg><use href="#lock"/></svg>Kilitli</span></div>
+        </div>
+      </div>
+
+      <div class="scene s5">
+        <svg class="unlock"><use href="#open"/></svg>
+        <p class="title">Bugün seni en çok ne güldürdü?</p>
+        <div class="answers side">
+          <div class="answer"><strong>Sen</strong><p>Sabahki dans denemen.</p></div>
+          <div class="answer"><strong>Partnerin</strong><p>Kutuya sığmaya çalışan kedi.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps" aria-label="Nasıl çalışır?">
+      <li>Davet kodu gir</li>
+      <li>Hemen eşleşin</li>
+      <li>Günün sorusu</li>
+      <li>Gizlice cevaplayın</li>
+      <li>Kilit açılır</li>
+      <li>Seri büyür</li>
+    </ol>
+  </div>
 </header>
 
 <main>
 
-<section aria-labelledby="nasil">
-  <h2 id="nasil">Nasıl çalışır?</h2>
-  <ol class="steps">
-    <li>
-      <h3>Partnerini davet et</h3>
-      <p>6 haneli davet kodunu paylaş; partnerin kodu girince iki telefon eşleşir.</p>
+<section aria-labelledby="fiyatlar">
+  <h2 id="fiyatlar">Fiyatlar</h2>
+  <p class="intro">Twinq ücretsizdir, Premium isteğe bağlıdır.</p>
+  <ul class="plans">
+    <li class="plan">
+      <span class="badge" aria-hidden="true"></span>
+      <h3>Aylık</h3>
+      <p class="price"><span class="amount" data-price="monthly"></span> <span class="period">/ ay</span></p>
     </li>
-    <li>
-      <h3>Günün sorusunu ikiniz de cevaplayın</h3>
-      <p>İkinize aynı soru gelir. Herkes kendi cevabını yazar.</p>
+    <li class="plan best">
+      <span class="badge">En avantajlı</span>
+      <h3>Yıllık</h3>
+      <p class="price"><span class="amount" data-price="yearly"></span> <span class="period">/ yıl</span></p>
+      <p class="saving" id="saving"></p>
     </li>
-    <li>
-      <h3>Cevaplar birlikte açılır</h3>
-      <p>Cevaplar ancak ikiniz de cevaplayınca açılır ve yan yana görünür.</p>
-    </li>
-  </ol>
-</section>
-
-<section aria-labelledby="ozellikler">
-  <h2 id="ozellikler">Özellikler</h2>
-  <ul class="features">
-    <li>
-      <h3>Günün sorusu</h3>
-      <p>Her gün ikiniz için yeni bir soru. Kaçırdıklarınızı son 7 gün içinde cevaplayabilirsiniz.</p>
-    </li>
-    <li>
-      <h3>Gizli cevaplar</h3>
-      <p>Sen cevaplamadan partnerinin cevabını göremezsin; o da seninkini.</p>
-    </li>
-    <li>
-      <h3>Seri ve seri koruma</h3>
-      <p>Günün sorusunu birlikte tamamladıkça seriniz büyür. Bir günü kaçırırsanız koruma hakkınız seriyi kurtarır.</p>
-    </li>
-    <li>
-      <h3>Beni Ne Kadar Tanıyorsun?</h3>
-      <p>Kendi cevabını seç, partnerininkini tahmin et. Puanlar ve uyum yüzdeniz ortaya çıksın.</p>
-    </li>
-    <li>
-      <h3>Desteler</h3>
-      <p>Günlük, Tanışma ve Eğlenceli ücretsiz desteler; Derin, Gelecek, Romantik ve Uzak Mesafe Premium ile.</p>
-    </li>
-    <li>
-      <h3>İlişki aşamasına göre sorular</h3>
-      <p>“Yeni başladık” derseniz ağır ve evlilik konulu sorular günün sorusu olarak karşınıza çıkmaz.</p>
-    </li>
-    <li>
-      <h3>Uzak Mesafe destesi</h3>
-      <p>Ayrı şehirlerdeki çiftlere özel sorular. “Uzak mesafedeyiz” seçeneği desteyi öne getirir. Premium destedir.</p>
-    </li>
-    <li>
-      <h3>Tek telefonla da oynanır</h3>
-      <p>Eşleşmeden, aynı telefonu sırayla kullanarak da cevaplayabilirsiniz.</p>
+    <li class="plan founder">
+      <span class="badge">Kurucu üye, sınırlı</span>
+      <h3>Ömür boyu</h3>
+      <p class="price"><span class="amount" data-price="lifetime"></span> <span class="period">tek seferlik</span></p>
     </li>
   </ul>
+  <noscript><p class="fine">Fiyatları görmek için JavaScript'i açın.</p></noscript>
+  <p class="fine">Üç pakette de aynı özellikler. Biri alır, ikiniz kullanırsınız. Abonelikler iptal edilene kadar yenilenir; fiyatlar App Store'dakiyle aynıdır.</p>
 </section>
 
-<section aria-labelledby="premium">
-  <div class="premium">
-    <h2 id="premium">Twinq Premium</h2>
-    <p>Daha fazla soru isteyen çiftler için.</p>
-    <ul>
-      <li>Derin, Gelecek, Romantik ve Uzak Mesafe desteleri açılır.</li>
-      <li>Günlük deste sorusu sınırı kalkar.</li>
-      <li>“Beni Ne Kadar Tanıyorsun?” sorularında ücretsiz sınır kalkar.</li>
-      <li>Ayda 1 yerine 3 seri koruma hakkınız olur.</li>
-    </ul>
-    <p class="share">Biriniz alınca ikiniz de kullanırsınız; eşleşmeniz sürdükçe Premium ikinizde de açıktır.</p>
-  </div>
+<section aria-labelledby="karsilastirma">
+  <h2 id="karsilastirma">Neler dahil?</h2>
+  <p class="intro">Ücretsiz başlayın, daha fazlasını isterseniz Premium'a geçin.</p>
+  <table>
+    <colgroup><col><col class="c-free"><col class="c-prem"></colgroup>
+    <thead>
+      <tr>
+        <th scope="col"><span class="sr">Özellik</span></th>
+        <th scope="col">Ücretsiz</th>
+        <th scope="col">Premium<small>Aylık, yıllık ve ömür boyu: hepsinde aynı</small></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Günün sorusu</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Gizli cevaplar</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Davet koduyla iki telefon veya tek telefon</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Günlük, Tanışma ve Eğlenceli desteleri</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Pazar günleri bir premium soru</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Son 7 günün bekleyen soruları</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Seri sayacı ve cevap geçmişi</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">İlişki aşamasına göre günün sorusu</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Instagram paylaşım kartları</th><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td><td><svg class="tick" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Deste sorusu</th><td>Günde 3</td><td>Sınırsız</td></tr>
+      <tr><th scope="row">“Beni Ne Kadar Tanıyorsun?” sorusu</th><td>Toplam 3</td><td>Sınırsız</td></tr>
+      <tr><th scope="row">Seri koruma</th><td>Ayda 1</td><td>Ayda 3</td></tr>
+      <tr><th scope="row">Derin, Gelecek ve Romantik desteleri</th><td><svg class="dash" aria-hidden="true"><use href="#dash"/></svg><span class="sr">Yok</span></td><td><svg class="tick gold" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Uzak Mesafe destesi</th><td><svg class="dash" aria-hidden="true"><use href="#dash"/></svg><span class="sr">Yok</span></td><td><svg class="tick gold" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+      <tr><th scope="row">Günün sorusu premium destelerden de gelir</th><td><svg class="dash" aria-hidden="true"><use href="#dash"/></svg><span class="sr">Yok</span></td><td><svg class="tick gold" aria-hidden="true"><use href="#tick"/></svg><span class="sr">Var</span></td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section aria-labelledby="sss">
@@ -225,23 +382,19 @@
   <div class="faq">
     <details>
       <summary>Cevaplarımı kim görebilir?</summary>
-      <p>Uygulamada yalnızca eşleştiğin partnerin görebilir, o da ancak aynı soruyu kendisi de cevapladıktan sonra. Tek telefonda oynarsanız cevaplar sunucuya gönderilmez, telefonda kalır. E-posta veya telefon numarası istenmez; reklam ve takip yoktur. Ayrıntılar <a href="gizlilik.html">Gizlilik Politikası</a>'nda.</p>
-    </details>
-    <details>
-      <summary>Twinq ücretsiz mi?</summary>
-      <p>Evet, ücretsiz kullanabilirsiniz: günün sorusu, günde 3 deste sorusu, ayda 1 seri koruma ve denemek için 3 “Beni Ne Kadar Tanıyorsun?” sorusu. Pazar günleri bir premium soru da herkese açılır. Premium isteğe bağlıdır.</p>
+      <p>Uygulamada yalnızca eşleştiğin partnerin, o da aynı soruyu kendisi cevapladıktan sonra (<a href="gizlilik.html">Gizlilik Politikası</a>).</p>
     </details>
     <details>
       <summary>İki telefon gerekir mi?</summary>
-      <p>Hayır. Tek telefonda sırayla oynayabilirsiniz. İki telefonunuz varsa eşleşip herkes kendi telefonundan cevaplayabilir.</p>
-    </details>
-    <details>
-      <summary>Verilerimi silebilir miyim?</summary>
-      <p>Evet. Uygulamada Ayarlar &gt; Verilerimi sil ile sunucudaki ve telefondaki verilerini kalıcı olarak silebilirsin. Aynı eşleşmedeki ortak geçmiş partnerin için de silinir.</p>
+      <p>Hayır, tek telefonda sırayla da cevaplayabilirsiniz.</p>
     </details>
     <details>
       <summary>Hesap açmam gerekiyor mu?</summary>
-      <p>Hayır. Kayıt, giriş veya şifre yok; uygulamayı açıp başlayabilirsin.</p>
+      <p>Hayır, kayıt, giriş veya şifre yok.</p>
+    </details>
+    <details>
+      <summary>Verilerimi silebilir miyim?</summary>
+      <p>Evet, Ayarlar &gt; Verilerimi sil ile kalıcı olarak silebilirsin; ortak geçmiş partnerin için de silinir.</p>
     </details>
   </div>
 </section>
@@ -258,5 +411,39 @@
 </footer>
 
 </div>
+
+<script>
+(function () {
+  // Fiyatlar (TL). Değiştirmek için yalnızca bu satırı düzenleyin.
+  var PRICES = { monthly: 49.99, yearly: 299, lifetime: 499 };
+
+  document.querySelectorAll("[data-price]").forEach(function (el) {
+    var value = PRICES[el.getAttribute("data-price")];
+    var digits = Number.isInteger(value) ? 0 : 2;
+    el.textContent = value.toLocaleString("tr-TR", { minimumFractionDigits: digits, maximumFractionDigits: digits }) + " TL";
+  });
+  // Uygulamadaki hesapla aynı: 12 aylık ödemeye göre, aşağı yuvarlanır.
+  var saving = Math.floor((1 - PRICES.yearly / (PRICES.monthly * 12)) * 100 + 1e-9);
+  if (saving > 0) document.getElementById("saving").textContent = "Aylığa göre %" + saving + " tasarruf";
+
+  // Telefon animasyonu: adım süreleri (ms), toplam yaklaşık 11,5 sn.
+  var DURATIONS = [2100, 1400, 1800, 2400, 2200, 1700];
+  var demo = document.getElementById("demo");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var timer;
+  function show(step) {
+    demo.setAttribute("data-step", step);
+    timer = setTimeout(show, DURATIONS[step - 1], step % DURATIONS.length + 1);
+  }
+  function start() {
+    clearTimeout(timer);
+    demo.classList.toggle("playing", !reduce.matches);
+    if (reduce.matches) demo.setAttribute("data-step", DURATIONS.length);
+    else show(1);
+  }
+  if (reduce.addEventListener) reduce.addEventListener("change", start);
+  start();
+})();
+</script>
 </body>
 </html>
