@@ -3,33 +3,260 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Twinq</title>
+<title>Twinq — Aynı soru, iki kalp.</title>
+<meta name="description" content="Twinq çiftlere her gün bir soru sorar. İkiniz de cevaplayınca cevaplar yan yana açılır.">
+<meta name="theme-color" content="#160E1C">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://twinq.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Twinq">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:url" content="https://twinq.app/">
+<meta property="og:title" content="Twinq — Aynı soru, iki kalp.">
+<meta property="og:description" content="Çiftlere her gün bir soru. İkiniz de cevaplayınca cevaplar yan yana açılır.">
+<meta property="og:image" content="https://twinq.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Twinq logosu ve sloganı: Aynı soru, iki kalp.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jakarta-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  body { margin: 0; background: #160E1C; color: #FBF4EC; font: 18px/1.6 "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
-  main { max-width: 760px; margin: 0 auto; padding: 24px 20px 64px; }
-  h1 { font-size: 30px; line-height: 1.25; margin: 8px 0 4px; }
-  h2 { font-size: 23px; margin: 32px 0 8px; color: #FFB561; }
-  h3 { font-size: 19px; margin: 22px 0 6px; }
-  a { color: #FFB561; font-weight: 600; word-break: break-word; }
-  code { background: #3A2A48; padding: 1px 5px; border-radius: 5px; }
-  ul { padding-left: 22px; } li { margin: 4px 0; }
-  header { display: flex; align-items: center; gap: 12px; }
-  header img { width: 44px; height: 44px; border-radius: 11px; }
-  header strong { font-size: 24px; letter-spacing: -0.02em; }
-  nav { margin-top: 40px; padding-top: 16px; border-top: 1px solid #3A2A48; display: flex; gap: 18px; flex-wrap: wrap; }
+  @font-face { font-family: "Bricolage Grotesque"; font-weight: 700; font-display: swap; src: url(fonts/bricolage-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-weight: 700; font-display: swap; src: url(fonts/bricolage-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: "Plus Jakarta Sans"; font-weight: 400 800; font-display: swap; src: url(fonts/jakarta-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: "Plus Jakarta Sans"; font-weight: 400 800; font-display: swap; src: url(fonts/jakarta-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+  :root {
+    --bg: #160E1C; --card: #22162B; --border: #3A2A48;
+    --text: #FBF4EC; --text2: #DCD0E3; --muted: #A895B4;
+    --me: #FFB561; --on-me: #2B1606; --me-bubble: #3A2618;
+    --partner: #C7B0FF; --partner-bubble: #2C2147;
+    --display: "Bricolage Grotesque", "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { background: var(--bg); color: var(--text); font: 400 17px/1.6 "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; overflow-wrap: break-word; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, .wordmark { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: 30px; line-height: 1.2; margin-bottom: 24px; }
+  h3 { font-size: 18px; font-weight: 800; line-height: 1.35; margin-bottom: 6px; }
+  p { color: var(--text2); }
+  a { color: var(--me); font-weight: 600; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--me); outline-offset: 3px; border-radius: 4px; }
+  section { padding: 48px 0; border-top: 1px solid var(--border); }
+
+  /* Üst */
+  .hero { padding: 24px 0 52px; text-align: center; }
+  .brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 36px; }
+  .brand svg { width: 42px; height: 40px; }
+  .wordmark { font-size: 34px; line-height: 1; }
+  .wordmark span { color: var(--me); }
+  .hero-mark { display: block; width: 190px; height: auto; margin: 0 auto 28px; }
+  h1 { font-size: 42px; line-height: 1.08; margin-bottom: 16px; }
+  h1 span { display: block; }
+  h1 span + span { color: var(--me); }
+  .lead { font-size: 18px; max-width: 30em; margin: 0 auto; }
+  .stores { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 28px auto 0; list-style: none; }
+  .store { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 12px 8px; line-height: 1.3; text-align: center; }
+  .store strong { display: block; font-size: 16px; font-weight: 800; white-space: nowrap; }
+  .store span { display: block; font-size: 13px; font-weight: 700; color: var(--me); margin-top: 2px; }
+
+  /* Nasıl çalışır */
+  .steps { display: grid; gap: 14px; list-style: none; counter-reset: step; }
+  .steps li { counter-increment: step; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
+  .steps li::before { content: counter(step); display: grid; place-items: center; width: 38px; height: 38px; margin-bottom: 14px; border-radius: 50%; background: var(--me); color: var(--on-me); font-family: var(--display); font-size: 19px; }
+  .steps li:nth-child(2)::before { background: var(--partner); color: #24163A; }
+
+  /* Özellikler */
+  .features { display: grid; gap: 12px; list-style: none; }
+  .features li { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px 20px; }
+  .features h3 { color: var(--me); }
+  .features li:nth-child(even) h3 { color: var(--partner); }
+  .features p, .steps p { font-size: 16px; }
+
+  /* Premium */
+  .premium { background: var(--partner-bubble); border: 1px solid var(--partner); border-radius: 24px; padding: 28px 22px; }
+  .premium h2 { margin-bottom: 12px; }
+  .premium ul { list-style: none; margin: 18px 0; display: grid; gap: 10px; }
+  .premium li { position: relative; padding-left: 22px; }
+  .premium li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--me); }
+  .premium .share { background: var(--me-bubble); color: var(--text); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
+
+  /* Sık sorulanlar */
+  .faq { max-width: 760px; display: grid; gap: 10px; }
+  details { background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 14px 18px; font-weight: 700; line-height: 1.4; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; flex: none; color: var(--me); font-size: 26px; font-weight: 500; line-height: 1; }
+  details[open] summary::after { content: "\2212"; }
+  details p { padding: 0 18px 18px; font-size: 16px; }
+
+  /* Alt */
+  footer { border-top: 1px solid var(--border); padding: 28px 0 40px; font-size: 15px; }
+  footer nav { display: flex; flex-wrap: wrap; column-gap: 24px; }
+  footer a { display: inline-block; padding: 10px 0; overflow-wrap: anywhere; }
+  footer p { color: var(--muted); margin-top: 8px; }
+
+  @media (min-width: 700px) {
+    .features { grid-template-columns: 1fr 1fr; }
+    .premium { padding: 40px; }
+  }
+  @media (min-width: 900px) {
+    .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; grid-template-rows: auto 1fr; column-gap: 48px; align-items: center; text-align: left; padding: 32px 0 88px; }
+    .brand { grid-column: 1 / -1; justify-content: flex-start; margin-bottom: 72px; }
+    .hero-mark { grid-column: 2; grid-row: 2; width: 100%; max-width: 360px; margin: 0 auto; }
+    .hero-text { grid-column: 1; grid-row: 2; }
+    h1 { font-size: 68px; }
+    h2 { font-size: 36px; }
+    .lead { margin: 0; font-size: 20px; }
+    .stores { margin: 32px 0 0; }
+    section { padding: 72px 0; }
+    .steps { grid-template-columns: repeat(3, 1fr); }
+  }
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 104 100">
+    <circle cx="40" cy="50" r="34" fill="none" stroke="#FFB561" stroke-width="4"/>
+    <circle cx="64" cy="50" r="34" fill="none" stroke="#C7B0FF" stroke-width="4"/>
+    <path d="M52 18.2 A34 34 0 0 1 52 81.8 A34 34 0 0 1 52 18.2 Z" fill="#FFB561"/>
+    <circle cx="52" cy="44" r="5.5" fill="#160E1C"/>
+    <path d="M49 47 L55 47 L57 60 L47 60 Z" fill="#160E1C"/>
+  </symbol>
+</svg>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="brand">
+    <svg aria-hidden="true"><use href="#logo"/></svg>
+    <span class="wordmark">twin<span>q</span></span>
+  </div>
+  <svg class="hero-mark" viewBox="0 0 104 100" aria-hidden="true"><use href="#logo"/></svg>
+  <div class="hero-text">
+    <h1><span>Aynı soru,</span> <span>iki kalp.</span></h1>
+    <p class="lead">Twinq çiftlere her gün bir soru sorar; ikiniz de cevaplayınca cevaplar yan yana açılır.</p>
+    <ul class="stores" aria-label="Mağazalar">
+      <li class="store"><strong>Google Play</strong><span>Yakında</span></li>
+      <li class="store"><strong>App Store</strong><span>Yakında</span></li>
+    </ul>
+  </div>
+</header>
+
 <main>
-<header><img src="favicon.png" alt=""><strong>Twinq</strong></header>
-<h1>Twinq</h1>
-<p>Çiftlere her gün bir soru. İkiniz de cevaplayınca cevaplar yan yana açılır.</p>
-<ul>
-  <li><a href="gizlilik.html">Gizlilik Politikası</a></li>
-  <li><a href="kosullar.html">Kullanım Koşulları</a></li>
-</ul>
-<nav><a href="index.html">Ana sayfa</a><a href="gizlilik.html">Gizlilik Politikası</a><a href="kosullar.html">Kullanım Koşulları</a></nav>
+
+<section aria-labelledby="nasil">
+  <h2 id="nasil">Nasıl çalışır?</h2>
+  <ol class="steps">
+    <li>
+      <h3>Partnerini davet et</h3>
+      <p>6 haneli davet kodunu paylaş; partnerin kodu girince iki telefon eşleşir.</p>
+    </li>
+    <li>
+      <h3>Günün sorusunu ikiniz de cevaplayın</h3>
+      <p>İkinize aynı soru gelir. Herkes kendi cevabını yazar.</p>
+    </li>
+    <li>
+      <h3>Cevaplar birlikte açılır</h3>
+      <p>Cevaplar ancak ikiniz de cevaplayınca açılır ve yan yana görünür.</p>
+    </li>
+  </ol>
+</section>
+
+<section aria-labelledby="ozellikler">
+  <h2 id="ozellikler">Özellikler</h2>
+  <ul class="features">
+    <li>
+      <h3>Günün sorusu</h3>
+      <p>Her gün ikiniz için yeni bir soru. Kaçırdıklarınızı son 7 gün içinde cevaplayabilirsiniz.</p>
+    </li>
+    <li>
+      <h3>Gizli cevaplar</h3>
+      <p>Sen cevaplamadan partnerinin cevabını göremezsin; o da seninkini.</p>
+    </li>
+    <li>
+      <h3>Seri ve seri koruma</h3>
+      <p>Günün sorusunu birlikte tamamladıkça seriniz büyür. Bir günü kaçırırsanız koruma hakkınız seriyi kurtarır.</p>
+    </li>
+    <li>
+      <h3>Beni Ne Kadar Tanıyorsun?</h3>
+      <p>Kendi cevabını seç, partnerininkini tahmin et. Puanlar ve uyum yüzdeniz ortaya çıksın.</p>
+    </li>
+    <li>
+      <h3>Desteler</h3>
+      <p>Günlük, Tanışma ve Eğlenceli ücretsiz desteler; Derin, Gelecek, Romantik ve Uzak Mesafe Premium ile.</p>
+    </li>
+    <li>
+      <h3>İlişki aşamasına göre sorular</h3>
+      <p>“Yeni başladık” derseniz ağır ve evlilik konulu sorular günün sorusu olarak karşınıza çıkmaz.</p>
+    </li>
+    <li>
+      <h3>Uzak Mesafe destesi</h3>
+      <p>Ayrı şehirlerdeki çiftlere özel sorular. “Uzak mesafedeyiz” seçeneği desteyi öne getirir. Premium destedir.</p>
+    </li>
+    <li>
+      <h3>Tek telefonla da oynanır</h3>
+      <p>Eşleşmeden, aynı telefonu sırayla kullanarak da cevaplayabilirsiniz.</p>
+    </li>
+  </ul>
+</section>
+
+<section aria-labelledby="premium">
+  <div class="premium">
+    <h2 id="premium">Twinq Premium</h2>
+    <p>Daha fazla soru isteyen çiftler için.</p>
+    <ul>
+      <li>Derin, Gelecek, Romantik ve Uzak Mesafe desteleri açılır.</li>
+      <li>Günlük deste sorusu sınırı kalkar.</li>
+      <li>“Beni Ne Kadar Tanıyorsun?” sorularında ücretsiz sınır kalkar.</li>
+      <li>Ayda 1 yerine 3 seri koruma hakkınız olur.</li>
+    </ul>
+    <p class="share">Biriniz alınca ikiniz de kullanırsınız; eşleşmeniz sürdükçe Premium ikinizde de açıktır.</p>
+  </div>
+</section>
+
+<section aria-labelledby="sss">
+  <h2 id="sss">Sık sorulanlar</h2>
+  <div class="faq">
+    <details>
+      <summary>Cevaplarımı kim görebilir?</summary>
+      <p>Uygulamada yalnızca eşleştiğin partnerin görebilir, o da ancak aynı soruyu kendisi de cevapladıktan sonra. Tek telefonda oynarsanız cevaplar sunucuya gönderilmez, telefonda kalır. E-posta veya telefon numarası istenmez; reklam ve takip yoktur. Ayrıntılar <a href="gizlilik.html">Gizlilik Politikası</a>'nda.</p>
+    </details>
+    <details>
+      <summary>Twinq ücretsiz mi?</summary>
+      <p>Evet, ücretsiz kullanabilirsiniz: günün sorusu, günde 3 deste sorusu, ayda 1 seri koruma ve denemek için 3 “Beni Ne Kadar Tanıyorsun?” sorusu. Pazar günleri bir premium soru da herkese açılır. Premium isteğe bağlıdır.</p>
+    </details>
+    <details>
+      <summary>İki telefon gerekir mi?</summary>
+      <p>Hayır. Tek telefonda sırayla oynayabilirsiniz. İki telefonunuz varsa eşleşip herkes kendi telefonundan cevaplayabilir.</p>
+    </details>
+    <details>
+      <summary>Verilerimi silebilir miyim?</summary>
+      <p>Evet. Uygulamada Ayarlar &gt; Verilerimi sil ile sunucudaki ve telefondaki verilerini kalıcı olarak silebilirsin. Aynı eşleşmedeki ortak geçmiş partnerin için de silinir.</p>
+    </details>
+    <details>
+      <summary>Hesap açmam gerekiyor mu?</summary>
+      <p>Hayır. Kayıt, giriş veya şifre yok; uygulamayı açıp başlayabilirsin.</p>
+    </details>
+  </div>
+</section>
+
 </main>
+
+<footer>
+  <nav aria-label="Alt bağlantılar">
+    <a href="gizlilik.html">Gizlilik Politikası</a>
+    <a href="kosullar.html">Kullanım Koşulları</a>
+    <a href="mailto:yusufkadirr35@gmail.com">yusufkadirr35@gmail.com</a>
+  </nav>
+  <p>© Twinq</p>
+</footer>
+
+</div>
 </body>
 </html>
